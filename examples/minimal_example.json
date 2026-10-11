@@ -1,16 +1,15 @@
 {
   "zarr_format": 3,
-  "node_type": "array",
+  "node_type": "group",
   "attributes": {
     "zarr_conventions": [
       {
-        "schema_url": "https://raw.githubusercontent.com/zarr-conventions/template/refs/tags/v1/schema.json",
-        "spec_url": "https://github.com/zarr-conventions/template/blob/v1/README.md",
-        "uuid": "00000000-0000-0000-0000-000000000000",
-        "name": "template:",
-        "description": "Template convention for demonstrating Zarr convention metadata structure"
+        "uuid": "93624424-4c95-4eda-b86a-f1880206739f",
+        "schema_url": "https://raw.githubusercontent.com/zarr-conventions/links-references/refs/tags/v1/schema.json",
+        "spec_url": "https://github.com/zarr-conventions/links-references/blob/v1/README.md",
+        "name": "links-references",
+        "description": "Links and object references between nodes of Zarr hierarchies"
       }
-    ],
-    "template:new_field": "minimal example"
+    ]
   }
 }

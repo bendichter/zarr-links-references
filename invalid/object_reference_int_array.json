@@ -1,0 +1,39 @@
+{
+  "zarr_format": 3,
+  "node_type": "array",
+  "shape": [3],
+  "data_type": "int64",
+  "chunk_grid": {
+    "name": "regular",
+    "configuration": {
+      "chunk_shape": [3]
+    }
+  },
+  "chunk_key_encoding": {
+    "name": "default",
+    "configuration": {
+      "separator": "/"
+    }
+  },
+  "fill_value": 0,
+  "codecs": [
+    {
+      "name": "bytes",
+      "configuration": {
+        "endian": "little"
+      }
+    }
+  ],
+  "attributes": {
+    "zarr_conventions": [
+      {
+        "uuid": "93624424-4c95-4eda-b86a-f1880206739f",
+        "schema_url": "https://raw.githubusercontent.com/zarr-conventions/links-references/refs/tags/v1/schema.json",
+        "spec_url": "https://github.com/zarr-conventions/links-references/blob/v1/README.md",
+        "name": "links-references",
+        "description": "Links and object references between nodes of Zarr hierarchies"
+      }
+    ],
+    "_DTYPE": "object_reference"
+  }
+}

@@ -4,6 +4,7 @@ import { join, extname } from "path";
 import { execSync } from "child_process";
 
 const examplesDir = "examples";
+const invalidDir = "invalid";
 const schemaFile = "schema.json";
 
 async function runTests() {
@@ -39,9 +40,29 @@ async function runTests() {
       }
     }
 
+    // Every file in invalid/ must fail validation
+    const invalidFiles = (await readdir(invalidDir)).filter(
+      (file) => extname(file) === ".json",
+    );
+    for (const file of invalidFiles) {
+      const filePath = join(invalidDir, file);
+      process.stdout.write(`Testing ${filePath} is rejected... `);
+      try {
+        execSync(`node validate.js ${schemaFile} ${filePath}`, {
+          stdio: "pipe",
+          encoding: "utf8",
+        });
+        console.log("❌ FAILED (it validated)");
+        failed++;
+      } catch {
+        console.log("✅ PASSED");
+        passed++;
+      }
+    }
+
     console.log("\n" + "=".repeat(50));
     console.log(
-      `Total: ${jsonFiles.length} | Passed: ${passed} | Failed: ${failed}`,
+      `Total: ${passed + failed} | Passed: ${passed} | Failed: ${failed}`,
     );
     console.log("=".repeat(50));
 
