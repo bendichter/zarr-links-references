@@ -1,5 +1,7 @@
 # Links and Object References
 
+> **Draft for discussion** in [hdmf-dev/hdmf-zarr](https://github.com/hdmf-dev/hdmf-zarr/issues). The UUID is final, but the schema and spec URLs are placeholders until the convention has a permanent home.
+
 - **UUID**: 93624424-4c95-4eda-b86a-f1880206739f
 - **Name**: links-references
 - **Schema URL**: "https://raw.githubusercontent.com/zarr-conventions/links-references/refs/tags/v1/schema.json"
