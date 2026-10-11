@@ -27,7 +27,7 @@
         },
         "raw": {
           "ref": {
-            "uri": "../sub-01_raw.nwb.zarr",
+            "uri": "https://example.org/dandiset/sub-01/sub-01_raw.nwb.zarr",
             "node": "/acquisition/ElectricalSeries"
           }
         }

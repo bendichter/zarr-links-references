@@ -22,7 +22,7 @@
       "links": {
         "device": {
           "ref": {
-            "uri": "../other.zarr",
+            "uri": "https://example.org/dandiset/other.nwb.zarr",
             "node": "general/devices/probe"
           }
         }

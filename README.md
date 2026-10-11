@@ -98,7 +98,7 @@ The object MUST have at least one of these fields.
       "device": { "ref": { "node": "../../devices/probe" } },
       "raw": {
         "ref": {
-          "uri": "../sub-01_raw.nwb.zarr",
+          "uri": "https://example.org/dandiset/sub-01/sub-01_raw.nwb.zarr",
           "node": "/acquisition/ElectricalSeries"
         }
       }
@@ -164,7 +164,7 @@ hdmf-zarr 0.14 stores the same information with different attributes, and with a
 | hdmf-zarr 0.14                                                                                | This convention                                                                       |
 | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | `"_LINKS": [{"name": "device", "source": ".", "path": "/general/devices/probe"}]`             | `"links_references": {"links": {"device": {"ref": {"node": "../../devices/probe"}}}}` |
-| `"source": "../other.nwb.zarr"` in a link                                                     | `"uri": "../other.nwb.zarr"` in its `ref` object                                      |
+| `"source": "../other.nwb.zarr"` in a link                                                     | `"uri": "https://example.org/dandiset/other.nwb.zarr"` in its `ref` object            |
 | `"_DTYPE": "object_reference"`, with elements like `"/general/extracellular_ephys/g"`         | `"links_references": {"references": true}`, with elements like `"../../g"`            |
 | `"_REFERENCE_FIELDS": ["timeseries"]`                                                         | `"links_references": {"references": ["timeseries"]}`                                  |
 | `"table": {"_REFERENCE": {"source": ".", "path": "/general/extracellular_ephys/electrodes"}}` | `"table": {"ref": {"node": "../../../general/extracellular_ephys/electrodes"}}`       |
