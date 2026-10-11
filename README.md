@@ -120,7 +120,7 @@ An HDF5 object with more than one hard link is reachable by several names. A wri
 - `true`: each element is an object reference. The array's data type MUST be a string type, `string` (variable-length UTF-8) or `fixed_length_utf32`.
 - a list of field names: the array has a `struct` data type, and each listed field is an object reference. Each listed field MUST exist in the struct and MUST have a string data type.
 
-Each reference is the absolute path of its target in the same store, such as `"/general/devices/probe"`. The empty string `""` is a null reference.
+Each reference is the path of its target in the same store, relative to the array, with the same rules as the `node` of a `ref` object without a `uri`: `..` is the array's parent group. For example, the `group` column of an electrodes table at `/general/extracellular_ephys/electrodes/group` refers to `/general/extracellular_ephys/g` as `"../../g"`. All paths are relative, in reference arrays as in links and `ref` objects, so a hierarchy stays valid when it's opened from a subpath or stored inside a larger store. The empty string `""` is a null reference.
 
 ```json
 {
@@ -159,13 +159,13 @@ A reference stored as an attribute value is a `ref` convention object, and needs
 
 ## Differences from hdmf-zarr 0.14 (Informative)
 
-hdmf-zarr 0.14 stores the same information with different attributes. The data in reference arrays is unchanged: absolute target paths as strings.
+hdmf-zarr 0.14 stores the same information with different attributes, and with absolute paths. Reference arrays hold the same targets, as paths relative to the array in place of absolute ones.
 
 | hdmf-zarr 0.14                                                                                | This convention                                                                       |
 | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
 | `"_LINKS": [{"name": "device", "source": ".", "path": "/general/devices/probe"}]`             | `"links_references": {"links": {"device": {"ref": {"node": "../../devices/probe"}}}}` |
 | `"source": "../other.nwb.zarr"` in a link                                                     | `"uri": "../other.nwb.zarr"` in its `ref` object                                      |
-| `"_DTYPE": "object_reference"`                                                                | `"links_references": {"references": true}`                                            |
+| `"_DTYPE": "object_reference"`, with elements like `"/general/extracellular_ephys/g"`         | `"links_references": {"references": true}`, with elements like `"../../g"`            |
 | `"_REFERENCE_FIELDS": ["timeseries"]`                                                         | `"links_references": {"references": ["timeseries"]}`                                  |
 | `"table": {"_REFERENCE": {"source": ".", "path": "/general/extracellular_ephys/electrodes"}}` | `"table": {"ref": {"node": "../../../general/extracellular_ephys/electrodes"}}`       |
 
@@ -177,10 +177,10 @@ The Zarr v2 encoding of hdmf-zarr versions before 0.14 (`zarr_link` and `zarr_dt
 
 ## Open Questions
 
-1. **Absolute paths in `ref`.** `ref` requires a path relative to the referencing node within the same store, and rejects one that starts with `/`. hdmf-zarr and HDF5 use absolute paths, which don't change when the referencing node moves and are easier to read. Would `ref` accept absolute paths without a `uri`? If so, links and attribute references could use them, matching reference arrays.
-2. **References to other stores from arrays.** Array elements are bare paths, so they can only point within the same store.
-3. **Arrays of references in attributes.** HDF5 allows an attribute holding several object references. `ref` doesn't say whether a list of `ref` objects is one.
-4. **The name of the key.** `links_references` is a placeholder.
+1. **References to other stores from arrays.** Array elements are bare paths, so they can only point within the same store.
+2. **Arrays of references in attributes.** HDF5 allows an attribute holding several object references. `ref` doesn't say whether a list of `ref` objects is one.
+3. **The name of the key.** `links_references` is a placeholder.
+4. **Declaring `ref`.** A group with links declares `ref`, since its targets are `ref` objects. [R-CF/zarr_convention_ref#4](https://github.com/R-CF/zarr_convention_ref/issues/4) asks whether a convention that nests `ref` objects should declare `ref` as well. This draft will follow what is decided there.
 
 ## Known Implementations
 
