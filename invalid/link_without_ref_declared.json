@@ -7,23 +7,18 @@
         "uuid": "93624424-4c95-4eda-b86a-f1880206739f",
         "schema_url": "https://raw.githubusercontent.com/zarr-conventions/links-references/refs/tags/v1/schema.json",
         "spec_url": "https://github.com/zarr-conventions/links-references/blob/v1/README.md",
-        "name": "links-references",
+        "name": "links_references",
         "description": "Links and object references between nodes of Zarr hierarchies"
       }
     ],
-    "targets": [
-      {
-        "_REFERENCE": {
-          "source": ".",
-          "path": "/acquisition/trace_a"
-        }
-      },
-      {
-        "_REFERENCE": {
-          "source": ".",
-          "path": "/acquisition/trace_b"
+    "links_references": {
+      "links": {
+        "device": {
+          "ref": {
+            "node": "../probe"
+          }
         }
       }
-    ]
+    }
   }
 }

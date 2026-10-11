@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Links and Object References Convention",
-  "description": "Schema for the Links and Object References Zarr convention: links in groups, arrays of object references, reference fields of struct arrays, and references in attributes",
+  "description": "Schema for the Links and Object References Zarr convention: links in groups, and arrays whose elements or struct fields are object references",
   "type": "object",
   "properties": {
     "zarr_format": {
@@ -24,28 +24,11 @@
             "$ref": "#/$defs/conventionMetadata"
           }
         },
-        "_LINKS": {
-          "type": "array",
-          "description": "Links held by this group",
-          "items": {
-            "$ref": "#/$defs/link"
-          }
-        },
-        "_REFERENCE_FIELDS": {
-          "type": "array",
-          "description": "Names of the fields of a struct array that hold object references",
-          "items": {
-            "type": "string",
-            "minLength": 1
-          },
-          "minItems": 1,
-          "uniqueItems": true
+        "links_references": {
+          "$ref": "#/$defs/linksReferences"
         }
       },
-      "required": ["zarr_conventions"],
-      "additionalProperties": {
-        "$ref": "#/$defs/attributeValue"
-      }
+      "required": ["zarr_conventions"]
     }
   },
   "required": ["zarr_format", "node_type", "attributes"],
@@ -55,7 +38,13 @@
         "properties": {
           "attributes": {
             "type": "object",
-            "required": ["_LINKS"]
+            "properties": {
+              "links_references": {
+                "type": "object",
+                "required": ["links"]
+              }
+            },
+            "required": ["links_references"]
           }
         },
         "required": ["attributes"]
@@ -64,6 +53,17 @@
         "properties": {
           "node_type": {
             "const": "group"
+          },
+          "attributes": {
+            "type": "object",
+            "properties": {
+              "zarr_conventions": {
+                "type": "array",
+                "contains": {
+                  "$ref": "#/$defs/refConventionMetadata"
+                }
+              }
+            }
           }
         }
       }
@@ -74,11 +74,17 @@
           "attributes": {
             "type": "object",
             "properties": {
-              "_DTYPE": {
-                "const": "object_reference"
+              "links_references": {
+                "type": "object",
+                "properties": {
+                  "references": {
+                    "const": true
+                  }
+                },
+                "required": ["references"]
               }
             },
-            "required": ["_DTYPE"]
+            "required": ["links_references"]
           }
         },
         "required": ["attributes"]
@@ -100,7 +106,18 @@
         "properties": {
           "attributes": {
             "type": "object",
-            "required": ["_REFERENCE_FIELDS"]
+            "properties": {
+              "links_references": {
+                "type": "object",
+                "properties": {
+                  "references": {
+                    "type": "array"
+                  }
+                },
+                "required": ["references"]
+              }
+            },
+            "required": ["links_references"]
           }
         },
         "required": ["attributes"]
@@ -147,8 +164,8 @@
         },
         "name": {
           "type": "string",
-          "const": "links-references",
-          "description": "Human-readable name of the convention"
+          "const": "links_references",
+          "description": "Human-readable name of the convention, matching its nesting key"
         },
         "description": {
           "type": "string",
@@ -169,91 +186,96 @@
       ],
       "additionalProperties": false
     },
-    "target": {
+    "refConventionMetadata": {
       "type": "object",
-      "description": "Identifies a node: the hierarchy that holds it and its path within that hierarchy",
+      "description": "The convention metadata object of the ref convention, which link targets use",
       "properties": {
-        "source": {
-          "type": "string",
-          "minLength": 1,
-          "description": "The root of the hierarchy that holds the target, as a URI reference resolved against the root of this hierarchy; '.' for this hierarchy"
-        },
-        "path": {
-          "type": "string",
-          "pattern": "^/",
-          "description": "Absolute path of the target within that hierarchy"
+        "uuid": {
+          "const": "d89b30cf-ed8c-43d5-9a16-b492f0cd8786"
         }
       },
-      "required": ["source", "path"]
+      "required": ["uuid"]
     },
-    "link": {
+    "linksReferences": {
       "type": "object",
-      "description": "A link: a named child of a group that is another node",
-      "allOf": [
-        {
-          "$ref": "#/$defs/target"
-        }
-      ],
+      "description": "Properties of the Links and Object References convention",
       "properties": {
-        "name": {
-          "type": "string",
-          "minLength": 1,
-          "not": {
-            "pattern": "/"
-          },
-          "description": "Name of the link within the group"
-        },
-        "source": true,
-        "path": true
-      },
-      "required": ["name"],
-      "additionalProperties": false
-    },
-    "attributeReference": {
-      "type": "object",
-      "description": "An object reference stored as an attribute value",
-      "properties": {
-        "_REFERENCE": {
+        "links": {
           "type": "object",
-          "allOf": [
-            {
-              "$ref": "#/$defs/target"
+          "description": "The links held by this group, by name",
+          "propertyNames": {
+            "minLength": 1,
+            "not": {
+              "pattern": "/"
             }
-          ],
-          "properties": {
-            "source": true,
-            "path": true
           },
-          "additionalProperties": false
-        }
-      },
-      "required": ["_REFERENCE"],
-      "additionalProperties": false
-    },
-    "attributeValue": {
-      "description": "Any attribute value. An object with a _REFERENCE key must be a reference, and so must every object with a _REFERENCE key in an array of them",
-      "if": {
-        "type": "object",
-        "required": ["_REFERENCE"]
-      },
-      "then": {
-        "$ref": "#/$defs/attributeReference"
-      },
-      "else": {
-        "if": {
-          "type": "array",
-          "contains": {
-            "type": "object",
-            "required": ["_REFERENCE"]
+          "minProperties": 1,
+          "additionalProperties": {
+            "$ref": "#/$defs/linkTarget"
           }
         },
-        "then": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/attributeReference"
+        "references": {
+          "description": "true if each element of the array is an object reference; for a struct array, the names of the fields that are",
+          "oneOf": [
+            {
+              "const": true
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            }
+          ]
+        }
+      },
+      "minProperties": 1,
+      "additionalProperties": false
+    },
+    "linkTarget": {
+      "type": "object",
+      "description": "A ref convention object (v2.0.0) that identifies a node. A link targets a whole node, so the ref attribute field is not allowed",
+      "properties": {
+        "ref": {
+          "type": "object",
+          "properties": {
+            "uri": {
+              "type": "string",
+              "description": "URI of another store that holds the target"
+            },
+            "node": {
+              "type": "string",
+              "description": "Path of the target: relative to this group within this store, absolute in another store"
+            }
+          },
+          "required": ["node"],
+          "additionalProperties": false,
+          "if": {
+            "required": ["uri"]
+          },
+          "then": {
+            "properties": {
+              "node": {
+                "type": "string",
+                "pattern": "^/"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "node": {
+                "type": "string",
+                "pattern": "^[^/]"
+              }
+            }
           }
         }
-      }
+      },
+      "required": ["ref"],
+      "additionalProperties": false
     },
     "stringDataType": {
       "description": "A Zarr v3 string data type: variable-length or fixed-length",

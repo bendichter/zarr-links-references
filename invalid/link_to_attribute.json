@@ -1,0 +1,32 @@
+{
+  "zarr_format": 3,
+  "node_type": "group",
+  "attributes": {
+    "zarr_conventions": [
+      {
+        "uuid": "93624424-4c95-4eda-b86a-f1880206739f",
+        "schema_url": "https://raw.githubusercontent.com/zarr-conventions/links-references/refs/tags/v1/schema.json",
+        "spec_url": "https://github.com/zarr-conventions/links-references/blob/v1/README.md",
+        "name": "links_references",
+        "description": "Links and object references between nodes of Zarr hierarchies"
+      },
+      {
+        "uuid": "d89b30cf-ed8c-43d5-9a16-b492f0cd8786",
+        "schema_url": "https://raw.githubusercontent.com/R-CF/zarr_convention_ref/refs/tags/v2.0.0/schema.json",
+        "spec_url": "https://github.com/R-CF/zarr_convention_ref/blob/v2.0.0/README.md",
+        "name": "ref",
+        "description": "External Reference Convention"
+      }
+    ],
+    "links_references": {
+      "links": {
+        "device": {
+          "ref": {
+            "node": "../probe",
+            "attribute": "/attributes/x"
+          }
+        }
+      }
+    }
+  }
+}

@@ -2,6 +2,8 @@
   "zarr_format": 3,
   "node_type": "group",
   "attributes": {
-    "_LINKS": []
+    "links_references": {
+      "links": {}
+    }
   }
 }
