@@ -186,7 +186,7 @@ The Zarr v2 encoding of hdmf-zarr versions before 0.14 (`zarr_link` and `zarr_dt
 
 ### Libraries and Tools
 
-None yet. [hdmf-zarr](https://github.com/hdmf-dev/hdmf-zarr) and [shadowzarr](https://github.com/bendichter/shadowzarr) write the earlier encoding described in [Differences from hdmf-zarr 0.14](#differences-from-hdmf-zarr-014-informative).
+None yet. [hdmf-zarr](https://github.com/hdmf-dev/hdmf-zarr) and [shadowzarr](https://github.com/catalystneuro/shadowzarr) write the earlier encoding described in [Differences from hdmf-zarr 0.14](#differences-from-hdmf-zarr-014-informative).
 
 ### Datasets Using This Convention
 
