@@ -1,6 +1,6 @@
 # Links and Object References
 
-> **Draft for discussion** in [hdmf-dev/hdmf-zarr#410](https://github.com/hdmf-dev/hdmf-zarr/issues/410). The UUID is final, but the schema and spec URLs are placeholders until the convention has a permanent home. The [first draft](https://github.com/bendichter/zarr-links-references/tree/v0-hdmf-zarr-0.14), which describes exactly what hdmf-zarr 0.14 writes, is tagged `v0-hdmf-zarr-0.14`.
+> **Draft for discussion** in [hdmf-dev/hdmf-zarr#410](https://github.com/hdmf-dev/hdmf-zarr/issues/410). The UUID is final, but the schema and spec URLs are placeholders until the convention has a permanent home. The [first draft](https://github.com/catalystneuro/zarr-links-references/tree/v0-hdmf-zarr-0.14), which describes exactly what hdmf-zarr 0.14 writes, is tagged `v0-hdmf-zarr-0.14`.
 
 - **UUID**: 93624424-4c95-4eda-b86a-f1880206739f
 - **Name**: links_references
